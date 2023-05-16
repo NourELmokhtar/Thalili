@@ -1,0 +1,117 @@
+﻿@using Thalili.Models
+@model List<user>
+@{
+    ViewBag.Title = "Users";
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+<main>
+    <div class="labOwnerPage container-flud">
+        <div class="row m-0">
+            <div class="col-2"></div>
+            <div class="col-10 leftCont pt-3 pe-3">
+                <i class="fa-solid fa-users-gear leftsvg"></i>
+                <h3 class="h3 d-inline lefth3 ">المستخدمين</h3>
+                <small class="d-block pb-3">المستخدمين</small>
+                <div class="leftCont-all">
+                    <div class="container pt-2 pb-5">
+                        <div>
+                            <p class="section-address">قائمة المستخدمين</p>
+                            <div class="row table-head text-center">
+                                <div class="col">رقم المعرف</div>
+                                <div class="col">اسم العميل</div>
+                                <div class="col">البريد الالكتروني</div>
+                                <div class="col">رقم الهاتف</div>
+                                <div class="col">تاكيد البريد الالكتروني</div>
+                                <div class="col"></div>
+                            </div>
+                            @{int curent = Convert.ToInt32(ViewData["page"]);
+                            }
+                            @for (int i = (curent - 1) * 4; i < Math.Min(Model.Count(), 4 * curent); i++)
+                            {
+                                <div class="row talabt-item text-center" id="Admin-Lab-item-1">
+                                    <div class="col UserID">@Model[i].user_id</div>
+                                    <div class="col">@Model[i].name</div>
+                                    <div class="col">@Model[i].email</div>
+                                    <div class="col">@Model[i].phone_number</div>
+                                    <div class="col">@Model[i].Email_confirmed</div>
+                                    <div class="col d-flex justify-content-center">
+                                        <button type="button" class="btn ms-md-2 ms-4" style="width: 2rem; height:2rem;"><img src="~/Content/Assets/imgs/Group 855.png" alt=""></button>
+                                        <button type="button" class="btn" data-bs-toggle="modal" data-bs-target="#DeleteUser" onclick="senduserIdofDelete(this)" style="width: 2rem; height:2rem;"><img src="~/Content/Assets/imgs/Group 854.png" alt=""></button>
+                                    </div>
+                                </div>
+                            }
+                            <div class="modal" id="DeleteUser">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+                                        <!-- Modal Header -->
+                                        <div class="modal-header">
+                                            <h4 class="modal-title">مسح المستخدم</h4>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal" style="position: absolute; left: 1rem;"></button>
+                                        </div>
+                                        <!-- Modal body -->
+                                        <div class="modal-body">
+                                            <div class="row align-items-center">
+                                                <img src="~/Content/Assets/imgs/Group 854.png" alt="" style="width: 3rem; height: 2rem;">
+                                                <p class="d-flex w-auto m-0"> هل انت متأكد انك تريد مسح المستخدم</p>
+                                            </div>
+                                        </div>
+                                        <!-- Modal footer -->
+                                        <div class="modal-footer">
+                                            <a class="btn btn-primary" data-bs-dismiss="modal">لا</a>
+                                            <form action="/Admin/DeleteUser" method="get" id="YesDeleteUser">
+                                                <input type="hidden" name="user_id" value="">
+                                                <button id="YesDeletebtn" type="submit" form="YesDeleteUser" class="btn btn-danger">امسح</button>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <nav class="paginat mt-4 mb-3">
+                                <ul class="d-flex justify-content-center" style="list-style:none;">
+                                    @for (int i = 1; i <= Math.Ceiling((Model.Count() * 1.0) / 4); i++)
+                                    {
+
+
+                                        if (i == curent)
+                                        {
+                                            <li class="page_item active" aria-current="page">
+                                                <span class="page_link">@i</span>
+                                            </li>
+                                        }
+                                        else
+                                        {
+                                            string pagination = Request.QueryString["page"];
+                                            if (pagination == null)
+                                            {
+                                                <li class="page_item "><a class="page_link" href="@Request.Url.AbsoluteUri?page=@i">@i</a></li>
+
+                                            }
+                                            else
+                                            {
+                                                string link = Request.Url.AbsoluteUri;
+                                                string newLink = "";
+                                                for (int j = 0; j < link.Length - 1; j++)
+                                                {
+                                                    newLink += link[j];
+                                                }
+                                                newLink += i.ToString();
+                                                <li class="page_item "><a class="page_link" href="@newLink">@i</a></li>
+                                            }
+                                        }
+
+
+                                    }
+
+
+                                </ul>
+                            </nav>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+</main>
+

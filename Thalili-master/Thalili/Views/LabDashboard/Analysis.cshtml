@@ -1,0 +1,109 @@
+﻿@using Thalili.Models
+@model List<analysis_in_lab>
+@{
+ ViewBag.Title = "Analysis";
+ Layout = "~/Views/Shared/_LayoutDashboard.cshtml";
+}
+@{int curent = Convert.ToInt32(ViewData["page"]); }
+<div class="labOwnerPage container-flud">
+ <div class="row m-0">
+  <div class="col-2"></div>
+  <div class="col-10 leftCont pt-3 pe-3" id="Thalil">
+   <i class="fa-solid fa-flask leftsvg me-5"></i>
+   <h3 class="h3 d-inline lefth3 ">التحاليل</h3>
+   <small class="d-block pb-3 me-5">مرحبا بك مجددا</small>
+   <div class="row leftCont-all justify-content-around">
+    <div class="col-8">
+     <div class="container pt-4 pb-5 rounded-3">
+      <div class="row table-head mb-0 pb-3">
+       <div class="col">اسم التحليل</div>
+       <div class="col">السعر</div>
+       <div class="col d-flex justify-content-end">
+        <button class="btn" data-buttonType="add" data-parentTarget="AddorEditThalil" onclick="addorEditThalil(this)" style="background-color: #5B79CC; color: white;">إضافة تحليل جديد</button>
+       </div>
+      </div>
+      @{
+       int c = 1;
+       for (int i = (curent - 1) * 5; i < Math.Min(Model.Count(), 5 * curent); i++)
+       {
+        <div class="row talabt-item justify-content-between" id="AddorEditThalil-item-@c">
+         <div class="col">@Model[i].medical_analysis.name</div>
+         <div class="col">@Model[i].price</div>
+         <div class="col d-flex justify-content-center">
+          <button type="button" class="btn ms-2" data-buttonType="edit" data-parentTarget="AddorEditThalil" onclick="addorEditThalil(this)"><img src="~/Content/Assets/imgs/Group 855.png" alt=""></button>
+          <button type="button" class="btn" data-bs-toggle="modal" data-bs-target="#DeleteModal" onclick="sendIdofDelete(this)"><img src="~/Content/Assets/imgs/Group 854.png" alt=""></button>
+         </div>
+         <input type="hidden" value="@Model[i].medical_analysis_id">
+        </div>
+        c++;
+       }
+      }
+      @*<div class="row talabt-item justify-content-between" id="AddorEditThalil-item2">
+           <div class="col">Blood</div>
+           <div class="col">220 ج.م</div>
+           <div class="col d-flex justify-content-center">
+               <button type="button" class="btn ms-2" data-buttonType="edit" data-parentTarget="AddorEditThalil" onclick="addorEditThalil(this)"><img src="~/Content/Assets/imgs/Group 855.png" alt=""></button>
+               <button type="button" class="btn" data-bs-toggle="modal" data-bs-target="#DeleteModal" onclick="sendIdofDelete(this)"><img src="~/Content/Assets/imgs/Group 854.png" alt=""></button>
+           </div>
+           <input type="hidden" value="2">
+       </div>*@
+      <div class="modal" id="DeleteModal">
+       <div class="modal-dialog">
+        <div class="modal-content">
+         <!-- Modal Header -->
+         <div class="modal-header">
+          <h4 class="modal-title">حذف تحليل</h4>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" style="position: absolute; left: 1rem;"></button>
+         </div>
+         <!-- Modal body -->
+         <div class="modal-body">هل أنت متأكد من أنك تريد حذف هذا العنصر؟</div>
+         <!-- Modal footer -->
+         <div class="modal-footer">
+          <a class="btn btn-danger" data-bs-dismiss="modal">لا</a>
+          <form action="/LabDashboard/DeleteThalil/" method="get">
+           <button id="YesDelete" type="submit" name="id" class="btn btn-danger" value="">نعم</button>
+          </form>
+         </div>
+        </div>
+       </div>
+      </div>
+      @{ int max_num_of_pages = Math.Max((int)Math.Ceiling((Model.Count * 1.0) / 5), 1);}   @*paging*@
+      <div class="text-center pt-5 pagi">
+       <a href="/LabDashboard/Analysis/?page=@(Math.Min(curent+1,max_num_of_pages))"><i class="fa-solid fa-circle-right"></i></a>
+       <span>page <span class="currentpage">@curent</span> of <span class="allpages">@max_num_of_pages</span></span>
+       <a href="/LabDashboard/Analysis/?page=@(Math.Max(curent-1,1))"><i class="fa-solid fa-circle-left"></i></a>
+      </div>
+     </div>
+    </div>
+    <div class="col-3 d-none" id="AddorEditThalil">
+     <div class="container pt-2 pb-3 rounded-3">
+      <h3></h3>
+      <div id="error">
+       @Html.Raw(TempData["msg"])
+      </div>
+      <form action="/LabDashboard/EditThalil" method="post">
+       <div class="row"><label for="#thalilName">اسم التحليل</label></div>
+       <div class="row">
+        <input class="rounded-3" type="text" list="Analysis" name="ThalilName" id="thalilName" autocomplete="off" required>
+        <datalist id="Analysis">
+            @foreach (medical_analysis item in ViewBag.analysis)
+            {
+         <option value="@item.name"/>
+            }
+        </datalist>
+       </div>
+       <div class="row"><label for="">السعر</label></div>
+       <div class="row">
+        <input class="col-10 rounded-3" type="text" name="price">
+        <div class="col-2">ج.م</div>
+       </div>
+       <div class="row mt-4">
+        <input class="btn" type="submit" value="" style="background-color: #5B79CC; color: white;">
+       </div>
+      </form>
+     </div>
+    </div>
+   </div>
+  </div>
+ </div>
+</div>

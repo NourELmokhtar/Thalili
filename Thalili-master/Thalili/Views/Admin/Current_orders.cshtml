@@ -1,0 +1,99 @@
+﻿@using Thalili.Models
+@model List<sub_order>
+@{
+    ViewBag.Title = "Current_orders";
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+<main>
+    <div class="labOwnerPage container-flud">
+        <div class="row m-0">
+            <div class="col-2"></div>
+            <div class="col-10 leftCont pt-3 pe-3">
+                <i class="fa-solid fa-book leftsvg"></i>
+                <h3 class="h3 d-inline lefth3">الطلبات الجارية</h3>
+                <div class="leftCont-all mt-5">
+                    <div class="container pt-2 pb-5">
+                        <div id="modernOrderes">
+                            <div class="row table-head">
+                                <div class="col-1">معرف الطلب</div>
+                                <div class="col">اسم العميل</div>
+                                <div class="col">المعمل</div>
+                                <div class="col-3">
+                                    <div class="row flex-row text-center">
+                                        <div class="col">اسم التحليل</div>
+                                        <div class="col">العدد</div>
+                                    </div>
+                                </div>
+                                <div class="col"></div>
+                            </div>
+                            @{ int ordID = 0;}
+                            @foreach (var ord in Model)
+                            {
+                                if (ordID == ord.order_id)
+                                {
+                                    continue;
+                                }
+                                <div class="row talabt-item" id="talabat-item-1">
+                                    <div class="col-1">@ord.order_id</div>
+                                   <div class="col">@*@ord.user.name*@</div>
+
+                                    <div class="col">@ord.analysis_in_lab.lab.name</div>
+                                    <div class="col-3">
+                                        @foreach (var ords in Model)
+                                        {
+                                            if (ords.user_id == ord.user_id && ords.order_id == ord.order_id)
+                                            {
+                                                <div class="row flex-row text-center">
+                                                    <div class="row mb-2 p-0">
+                                                        <div class="col align-self-center tahlilName">@ords.analysis_in_lab.medical_analysis.name</div>
+
+                                                        <div class="col align-self-center">@ords.count</div>
+                                                    </div>
+                                                </div>
+                                            }
+                                        }
+                                    </div>
+
+                                    <div class="col">
+                                        <div class="row m-0">
+                                            @if (ord.order.is_sent == true)
+                                            {
+                                                <p class="m-0" style="color: #43AF5C; font-size: 0.7rem;">تم ارسال المندوب <i class="fa-solid fa-circle-check me-1"></i></p>
+
+                                            }
+                                            else if (ord.order.is_accept == false)
+                                            {
+                                                <p class="m-0" style="color: #D43E3E; font-size: 0.7rem;">تم رفض الطلب<i class="fa-solid fa-square-xmark me-1"></i></p>
+                                            }
+                                            else if (ord.order.is_accept==true)
+                                            {
+
+                                                <p class="m-0" style="color: #6F7688; font-size: 0.7rem;">تم تلبية الطلب<i class="fa-solid fa-clock me-1" style="color: #6F7688;"></i></p>
+                                            }
+                                        </div>
+                                    </div>
+
+                                </div>
+                                ordID = ord.order_id;
+                            }
+                        </div>
+
+                        @*@{ int max_num_of_pages = Math.Max((int)Math.Ceiling((Model.Last().Count * 1.0) / 4), 1);}
+                            paging
+                            <div class="text-center pt-5">
+                                <a href="/LabDashboard/Orders/?page=@(Math.Min(curent+1,max_num_of_pages))"><i
+                                        class="fa-solid fa-circle-right"></i></a>
+                                <span>page <span class="currentpage">@curent</span> of <span
+                                        class="allpages">@max_num_of_pages</span></span>
+                                <a href="/LabDashboard/Orders/?page=@(Math.Max(curent-1,1))"><i
+                                        class="fa-solid fa-circle-left"></i></a>
+                            </div>*@
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</main>

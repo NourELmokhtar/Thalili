@@ -1,0 +1,116 @@
+﻿@using Thalili.Models
+@model List<cart>
+@{
+    ViewBag.Title = "Index";
+}
+@{
+    decimal total_price = 0;
+}
+<div class="cartPage">
+    <div class="container">
+        <h3 class="h3 py-3">قائمــة التسـوق</h3>
+        <div class="row justify-content-between">
+            <div class="col-8 rightSection" style="width: 70%;">
+                <div class="container">
+                    <p class="numofThalil py-3"><span>@Model.Count</span> تحاليل مضافة</p>
+                    @{
+                            int cart_id = 0;
+                    }
+                    @foreach (var crt in Model)
+                    {
+                        cart_id++;
+                    <form action="/Cart/edit" method="post" id="CartItem-@cart_id">
+                        <div class="row cartItem py-2 px-4 mb-3">
+                            <input type="hidden" name="analysis_id" value="@crt.analysis_id">
+                            <input type="hidden" name="Lab_id" value="@crt.Lab_id">
+                            <div class="col-3">
+                                <img src="~/Content/Images/Labs/@crt.analysis_in_lab.lab.img" alt="صورة المعمل" width="100" height="100">
+                            </div>
+                            <div class="col">
+                                <p class="w-auto thalilName m-0">@crt.analysis_in_lab.medical_analysis.name</p>
+                                <div class="row flex-row">
+                                    <i class="fa fa-solid fa-shop"></i>
+                                    <small class="w-auto p-0 labName">@crt.analysis_in_lab.lab.name</small>
+                                </div>
+                                <div class="row samples flex-row mt-3">
+                                    @foreach (var smple in crt.analysis_in_lab.medical_analysis.samples.ToList())
+                                    {
+                                    <span class="w-auto">@smple.sample_name</span>
+                                    }
+                                </div>
+                            </div>
+                            <div class="col-3">
+                                <div class="row">
+                                    <button class="btn btn-danger btn-sm w-100 deleteBtn" type="button" data-bs-toggle="modal" data-bs-target="#DeleteCartfModal" data-parentID="CartItem-@cart_id" onclick="deleteItemfromCart(this)">إزالة من القائمة</button>
+                                </div>
+                                <div class="row align-items-baseline justify-content-end">
+                                    <small class="w-auto p-0 ps-2">العدد المطلوب</small>
+                                    <button type="button" class="btn w-auto p-0" data-action="plusBtn" data-parentForm="CartItem-@cart_id" onclick="addorminusone(this)"><i class="fa-solid fa-circle-plus"></i></button>
+                                    <span class="w-auto numberoford" style="font-size: 0.9rem;font-family: 'Janna LT'; color: #707070;">@crt.count</span>
+                                    <input type="hidden" name="count" value="@crt.count">
+                                    <button type="button" class="btn w-auto p-0" data-action="minusBtn" data-parentForm="CartItem-@cart_id" onclick="addorminusone(this)"><i class="fa-solid fa-circle-minus"></i></button>
+                                </div>
+                                @{
+                                    decimal price = (decimal)(crt.analysis_in_lab.price * crt.count);
+                                     price = (int)Math.Ceiling(price);
+                                    total_price += price;
+                                }
+                                <div class="row d-flex justify-content-end">
+                                    <p class="w-auto p-0 m-0" style="color: #5B79CC; font-family: 'Hanimation';"><strong class="me-2 priceofThalil">@price</strong>EGP</p>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                                    }
+                </div>
+            </div>
+            <div class="col-3 leftSection" style="width: 27%">
+                <div class="container">
+                    <h4 class="h4 py-3 m-0">التكلفة الكلية</h4>
+                    <p class="m-0"><strong class="ms-2" id="AllCost">@total_price</strong>ج.م</p>
+                    <small>الدفع كاش عند وصول المندوبين</small>
+                    <h4 class="h4 mt-2">العنوان</h4>
+                    @if (Model.Count > 0)
+                    {
+                    <form action="/cart/completeRequst" method="post">
+                        <textarea class="p-3" name="Adress" rows="5" placeholder="ادخل عنوانك بالتفصيل هنا..." required oninvalid="this.setCustomValidity('ادخل عنوانك بالتفصيل')" oninput="this.setCustomValidity('')"></textarea>
+                        <input class="btn my-3" type="submit" name="" value="طلب المندوبين الان">
+                    </form>
+                    }
+                    else
+                    {
+                    <form action="/cart/completeRequst" method="post">
+                        <textarea class="p-3" name="Adress" rows="5" placeholder="ادخل عنوانك بالتفصيل هنا..." required oninvalid="this.setCustomValidity('ادخل عنوانك بالتفصيل')" oninput="this.setCustomValidity('')"></textarea>
+                        <input class="btn my-3" type="submit" name="" disabled value="طلب المندوبين الان">
+                    </form>
+                    }
+                </div>
+            </div>
+        </div>
+        <div class="modal" id="DeleteCartfModal">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <!-- Modal Header -->
+                    <div class="modal-header">
+                        <h4 class="modal-title">حذف تحليل</h4>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" style="position: absolute; left: 1rem;"></button>
+                    </div>
+                    <!-- Modal body -->
+                    <div class="modal-body">
+                        هل أنت متأكد من أنك تريد حذف هذا العنصر؟
+                        <form action="/Cart/deleteItem" method="post" id="deleteItemfromCartform">
+                            <input type="hidden">
+                            <input type="hidden">
+                        </form>
+                    </div>
+                    <!-- Modal footer -->
+                    <div class="modal-footer">
+                        <a class="btn btn-danger" data-bs-dismiss="modal">لا</a>
+                        <button id="YesDelete" type="submit" form="deleteItemfromCartform" name="" class="btn btn-danger" value="">نعم</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+

@@ -1,0 +1,239 @@
+﻿@using Thalili.Models;
+@model List<analysis_in_lab>
+@{
+    ViewBag.Title = "lab";
+}
+<div class="search_section py-5">
+    <div class="container">
+        <div class="row position-relative">
+            <form action="/Search" method="get">
+                <div class="col-xxl-12 col-xl-10 col-lg-8">
+                    <input class="col-6" type="search" name="searchField" id="mainPage-searchField"
+                           placeholder="ابحث عن تحاليل او معامل">
+                    <input type="submit" name="submitBtn" value="" id="mainPage-submitBtn">
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<div class="main-section-result">
+    <div class="container">
+        <div class="row">
+            <main class="right-section p-4 ms-lg-2 me-lg-2 col-lg-8 col-md-12">
+                <div class="lab-details mb-3">
+                    <div class="row">
+                        <div class="col-md-5 col-12">
+                            <div class="lab-pic">
+                                <img src="~/Content/Images/Labs/@Model.FirstOrDefault().lab.img" style="width:100%"/>
+                            </div>
+                        </div>
+                        <div class="col-md-7 col-12">
+                            <h2 class="title">
+                                @Model.FirstOrDefault().lab.name
+                            </h2>
+
+                            <div class="rating mb-2" style="word-spacing: -10px;">
+                                @for (int i = 0; i < Model.FirstOrDefault().lab.lab_rating; i++)
+                                {
+                                    <i class="fa fa-star"></i>
+                                }
+                            </div>
+                            <p class="search-description">
+                                @Model.FirstOrDefault().lab.description
+                            </p>
+                            @if (Model.FirstOrDefault().lab.is_available)
+                            {
+                                <div class="available mb-2"><i class="fa-solid fa-circle"></i> متاح لاستقبال طلبات </div>
+
+                            }
+                            else
+                            {
+                                <div class="available mb-2" style="color:red"><i class="fa-solid fa-circle"></i> غير متاح لاستقبال طلبات </div>
+                            }
+                            <div class="location mb-2"><i class="fa fa-location-dot"></i> @Model.FirstOrDefault().lab.location</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="search_analysis">
+
+                    <h3 class="search-title mb-3" style="color: #C7C7C7">التحاليل المتوفرة من المعمل</h3>
+                    <div class="row position-relative">
+                        <form action="/Analysis_and_Labs/SearchAnalysis" method="get">
+                            <div class="col-xxl-12 col-xl-10 col-lg-8 mb-4">
+                                <input type="hidden" name="LabID" value="@Model.FirstOrDefault().lab.lab_id">
+                                <input class="col-6" type="search" name="Analysis" id="mainPage-searchField" placeholder=" ابحث في التحاليل ">
+                                <input type="submit" name="submitBtn" value="" id="mainPage-submitBtn">
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
+                @{int curent = Convert.ToInt32(ViewData["page"]);
+                }
+                @if (ViewBag.isEmpty != true)
+                {
+                    <div class="related-thalil">
+                        <div class="row">
+                            @for (int i = (curent - 1) * 8; i < Math.Min(Model.Count(), 8 * curent); i++)
+                            {
+
+
+                                <div class="col-md-3">
+                                    <div class="item mb-3">
+                                        <div class="pictue">
+                                            <img src="~/Content/Images/Analysis/@Model[i].medical_analysis.img" style="width:100%; height:100px"/>
+                                        </div>
+                                        <h3 class="title mt-1 px-1">@Model[i].medical_analysis.name</h3>
+                                        <div class="tags d-flex">
+                                            @foreach (var samp in Model[i].medical_analysis.samples.ToList())
+                                            {
+
+                                                <div class="tag">
+                                                    <a href="#">@samp.sample_name</a>
+                                                </div>
+                                            }
+
+                                        </div>
+                                        <div class="more-details">
+                                            <div class="price p-2 bd-highlight">
+                                                <span class="phase">التكلفة </span>
+                                                @{ int price = (int)Model[i].price;}
+                                                <p class="total-price">@price<span class="currency">EGP</span></p>
+
+
+                                            </div>
+                                            <div class="add-cart p-2 bd-highlight">
+                                                <form action="/Analysis_and_Labs/AddToCart" method="post" id="">
+                                                    @if (Model.FirstOrDefault().lab.is_available)
+                                                    {
+                                                        <input class="btn btn-primary add-to-cart" type="submit" name="" value="إضافة الي القائمة">
+                                                    }
+                                                    else
+                                                    {
+                                                        <input class="btn btn-primary add-to-cart" type="submit" name="" value="إضافة الي القائمة" disabled>
+                                                    }
+                                                    <input type="hidden" name="analysis_id" value="@Model[i].medical_analysis_id">
+                                                    <input type="hidden" name="lab_id" value="@Model[i].Labs_id">
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            }
+                        </div>
+
+                    </div>
+                }
+
+                <div class="row">
+                    <div class="col-12">
+                        <nav class="paginat mt-4 mb-3">
+                            <ul class="d-flex justify-content-center" style="list-style:none;">
+
+                                @for (int i = 1; i <= Math.Ceiling((Model.Count() * 1.0) / 8); i++)
+                                {
+                                    if (i == curent)
+                                    {
+                                        <li class="page_item active" aria-current="page">
+                                            <span class="page_link">@i</span>
+                                        </li>
+                                    }
+                                    else
+                                    {
+                                        string pagination = Request.QueryString["page"];
+                                        string Labname = Request.QueryString["Analysis"];
+
+                                        if (pagination == null)
+                                        {
+                                            if (Labname == null)
+                                            {
+                                                <li class="page_item"><a class="page_link" href="@Request.Url.AbsoluteUri?page=@i">@i</a></li>
+                                            }
+                                            else
+                                            {
+                                                <li class="page_item"><a class="page_link" href="@Request.Url.AbsoluteUri&page=@i">@i</a></li>
+
+                                            }
+                                        }
+                                        else
+                                        {
+                                            string link = Request.Url.AbsoluteUri;
+                                            string newLink = "";
+                                            for (int j = 0; j < link.Length - 1; j++)
+                                            {
+                                                newLink += link[j];
+                                            }
+                                            newLink += i.ToString();
+                                            <li class="page_item"><a class="page_link" href="@newLink">@i</a></li>
+                                        }
+
+                                    }
+
+                                }
+
+
+                            </ul>
+                        </nav>
+                    </div>
+                </div>
+            </main>
+
+            <aside class="left-section p-4 ms-lg-2 me-lg-2 col-lg-3 col-md-12">
+                <h2 class="side-title">التقييمات</h2>
+                <p class="side-title-description">@ViewBag.rev.Count من التقييمات</p>
+                <div class="rating-lab mb-2" style="word-spacing: -10px;">
+                    @for (int i = 0; i < Model.FirstOrDefault().lab.lab_rating; i++)
+                    {
+                    <i class="fa fa-star" style="color: #F0D738"></i>
+                    }
+                    <span>(@ViewBag.rev.Count)</span>
+                </div>
+                <div class="rates">
+                    @foreach (review rev in ViewBag.rev)
+                    {
+                        <div class="rate mb-3">
+                            <div class="header d-flex justify-content-start">
+                                <img src="https://gcdnb.pbrd.co/images/nmKHIRoEpQoQ.png" />
+                                <div class="content">
+                                    <h4 class="name m-0">
+                                        @rev.user.name
+                                    </h4>
+                                    <div class="rating-user mb-2" style="word-spacing: -10px;">
+                                        @for (int i = 0; i < rev.rating; i++)
+                                        {
+                                            <i class="fa fa-star" style="color: #F0D738; font-size: 13px"></i>
+                                        }
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="description">
+                                @rev.comment
+                            </div>
+                        </div>
+                    }
+                    <form action="/Analysis_and_Labs/Make_Review" method="post">
+                        <input type="hidden" name="lab_id" value="@Model.FirstOrDefault().Labs_id" />
+                        <textarea rows="10" name="comment" id="CommentText" placeholder="اكتب تعليقك علي المعمل...."></textarea> <br />
+                        <div class="starrate">
+                            <input type="radio" id="star5" name="rating" value="5" />
+                            <label for="star5" title="text">5 stars</label>
+                            <input type="radio" id="star4" name="rating" value="4" />
+                            <label for="star4" title="text">4 stars</label>
+                            <input type="radio" id="star3" name="rating" value="3" />
+                            <label for="star3" title="text">3 stars</label>
+                            <input type="radio" id="star2" name="rating" value="2" />
+                            <label for="star2" title="text">2 stars</label>
+                            <input type="radio" id="star1" name="rating" value="1" checked />
+                            <label for="star1" title="text">1 star</label>
+                        </div>
+                        <input type="submit" value="تعليق" class="btn btn-primary" style="background-color: #F79A3D" />
+                    </form>
+                    <br />
+                    <p style="color:red;font-size:1rem">@TempData["review_error"]</p>
+                </div>
+            </aside>
+        </div>
+
+    </div>
+</div>

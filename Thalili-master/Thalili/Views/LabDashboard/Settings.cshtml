@@ -1,0 +1,108 @@
+﻿@using Thalili.Models
+@model lab
+@{
+    ViewBag.Title = "Settings";
+    Layout = "~/Views/Shared/_LayoutDashboard.cshtml";
+}
+<div class="labOwnerPage container-flud">
+    <div class="row m-0">
+        <div class="col-2"></div>
+        <div class="col-10 leftCont pt-3 pe-3" id="Settings">
+            <i class="fa-solid fa-gear leftsvg me-5"></i>
+            <h3 class="h3 d-inline lefth3 ">اعدادات المعمل</h3>
+            <small class="d-block pb-3 me-5">مرحبا بك مجددا</small>
+            <div class="container pb-5 pt-3 leftCont-all" style="background-color:white;">
+                <form method="post" action="/LabDashboard/Settings" enctype="multipart/form-data">
+                    <div class="row d-flex flex-row">
+                        <div class="col-2 d-flex flex-column">
+                            <div class="row">
+                                <label class="col-8">صورة المعمل</label>
+                                <button type="button" class="col-4 btn" data-bs-toggle="modal" data-bs-target="#UploadImage"><img src="~/Content/Assets/imgs/Group 855.png" /></button>
+                                @if (TempData["Image"] != null)
+                                {
+                                    <input type="hidden" name="img" value="@TempData["Image"]" />
+                                }
+                                else
+                                {
+                                    <input type="hidden" name="img" value="@Model.img" />
+                                }
+                            </div>
+                            @if (TempData["Image"] != null)
+                            {
+                                <img class="img-fluid rounded-3" src="~/Content/Images/Labs/@TempData["Image"]" alt="صورة المعمل" style="width:11rem; height:11rem" />
+                            }
+                            else
+                            {
+                                <img class="img-fluid rounded-3" src="~/Content/Images/Labs/@Model.img" alt="صورة المعمل" style="width:11rem; height:11rem" />
+                            }
+                        </div>
+                        <div class="col d-flex flex-column justify-content-evenly">
+                            <div class="row">
+                                <div class="col d-flex flex-column">
+                                    <label class="form-label" for="">اسم المعمل</label>
+                                    <input class="mb-3" type="text" name="name" value="@Model.name" />
+                                    <input type="hidden" name="lab_id" value="@Model.lab_id" />
+                                </div>
+                                <div class="col d-flex flex-column">
+                                    <label class="form-label" for="">رقم الهاتف</label>
+                                    <input class="mb-3" type="text" name="phone_number" value="@Model.phone_number" />
+                                </div>
+                            </div>
+                            <div class="row">
+
+                                <div class="col d-flex flex-column">
+                                    <label class="form-label" for="">الموقع</label>
+                                    <input class="mb-3" type="text" name="location" value="@Model.location" />
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col d-flex flex-column">
+                                    <label class="form-label" for="">البريد الالكتروني</label>
+                                    <input class="mb-3" type="email" name="lab_owner.email" value="@Model.lab_owner.email" readonly />
+                                </div>
+                                <div class="d-flex flex-column w-50">
+                                    <label class="form-label">الرقم السري</label>
+                                    <input class="mb-3" type="password" name="lab_owner.pass" value="@Model.lab_owner.pass" />
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="d-flex flex-column">
+                                    <label class="form-label">وصف المعمل</label>
+                                    <textarea class="mb-3" rows="5" cols="20" name="description" style="height:20vh; font-size:1.5rem">@Model.description</textarea>
+                                </div>
+                            </div>
+                            <div class="row flex-row-reverse mt-5">
+                                <div class="d-flex flex-row-reverse w-50">
+                                    <input class="mb-3 btn" type="submit" name="" value="حفظ التعديلات" />
+                                </div>
+                                <p style="color:green"> @TempData["SuccessMesssage"]</p>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+                <div class="modal" id="UploadImage">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <!-- Modal Header -->
+                            <div class="modal-header">
+                                <h4 class="modal-title">رفع صورة</h4>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" style="position: absolute; left: 1rem;"></button>
+                            </div>
+                            <!-- Modal body -->
+                            <div class="modal-body">
+                                <form action="/LabDashboard/UploadImage" method="post" id="UploadImageform" enctype="multipart/form-data">
+                                    <input type="file" name="file" accept="image/*" />
+                                </form>
+                            </div>
+                            <!-- Modal footer -->
+                            <div class="modal-footer">
+                                <a class="btn btn-danger" data-bs-dismiss="modal">لا</a>
+                                <button id="YesUpload" type="submit" form="UploadImageform" class="btn btn-danger">نعم</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

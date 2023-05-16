@@ -1,0 +1,173 @@
+@font-face {
+    font-family: "Janna LT";
+    src: url(../fonts/alfont_com_Janna-LT-Bold.ttf);
+}
+@font-face {
+    font-family: "Hanimation";
+    src: url(../fonts/alfont_com_هاني-موشن.ttf);
+}
+*{
+    box-sizing: border-box;
+}
+body {
+    direction: rtl;
+}
+.aLoginPage{
+    height: 100vh;
+    background-size: cover;
+    background-repeat: round;
+    position: relative;
+    z-index: 0;
+    transition-duration: 1s;
+}
+.aLoginPageForUser {
+    background-image: url(../imgs/man-using-digital-tablet.png);
+}
+.aLoginPageForLabOwner {
+    background-image: url(../imgs/doctor-show-plese-contact-us-line-contact.png);
+}
+#login-change-btns{
+    height: 84px;
+    border-bottom: 1px solid #C7C7C7;
+}
+#lab-owner-btn,#user-btn {
+    background-color: white;
+    color: #5B79CC;
+    font-family: "Hanimation";
+    font-size: 26px;
+    font-weight: 600;
+}
+#lab-owner-btn{
+    border-radius: 0 20px 0 0;
+}
+#user-btn{
+    border-radius: 20px 0 0 0;
+}
+.aLoginPage .layer {
+    height: 100vh;
+    width: 100%;
+    background-image: url(../imgs/woman-working-laborator-bulr.svg);
+    background-size: cover;
+    position: absolute;
+    top: 0;
+    right: 0;
+    z-index: -1;
+}
+.loginChangeBtnsActive{
+    background-color:#5B79CC !important;
+    color: white !important;
+}
+.loginPageForm{
+    background-color: white;
+    height: calc(600px - 84px);
+    border-radius: 0 0 20px 20px;
+}
+.aLoginPage .loginPageForm form h3,.aLoginPage .loginPageForm form p{
+    color: #707070;
+}
+.aLoginPage .loginPageForm form h3 {
+    font-family: "Hanimation";
+    font-size: 32px;
+    font-weight: 600;
+}
+.aLoginPage .loginPageForm form p{
+    font-family: "Janna LT";
+    font-size: 14px;
+    font-weight: bold;
+}
+.aLoginPage .loginPageForm form input[type="text"],
+.aLoginPage .loginPageForm form input[type="password"] {
+    height: 53px;
+    font-family: "Janna LT";
+    font-size: 18px;
+    border: none;
+    box-shadow: 0px 0px 6px 0px #00000029;
+    padding-right: 50px;
+}
+.aLoginPage .loginPageForm form input::placeholder {
+    font-family: "Janna LT";
+    font-size: 18px;
+    color: #D2D2D2;
+    letter-spacing: 0px;
+}
+.aLoginPage .loginPageForm form input:focus {
+    outline: 1px solid #5B79CC;
+}
+.aLoginPage .loginPageForm form input[type ="submit"]{
+    font-family: "Janna LT";
+    font-size: 18px;
+    height: 42px;
+    border: none;
+    background-color: #F79A3D;
+    color: white;
+    font-family: "Hanimation";
+    transition: 0.7s;
+}
+.aLoginPage .loginPageForm form input[type ="submit"]:hover{
+    background-color: #e97b0d;
+}
+#createAccountbtn {
+    height: 42px;
+    background-color: white;
+    color: #5B79CC;
+    border: 2px solid #5B79CC;
+    font-family: "Hanimation";
+    transition: 0.7s;
+}
+#createAccountbtn:hover{
+    color: white;
+    background-color: #5B79CC;
+}
+@media(max-width: 480px){
+    #lab-owner-btn,#user-btn{
+        font-size: 20px;
+    }
+    .aLoginPage .loginPageForm form h3 {
+        font-size: 28px;
+    }
+    .aLoginPage .loginPageForm form input{
+        font-size: 14px;
+        padding-top: 5px;
+        padding-bottom: 5px;
+    }
+}
+@media(max-width: 768px){
+    .loginPageForm,.aLoginPage .btn-group{
+        margin: auto !important;
+    }
+}
+@media(min-width: 1600px){
+    .loginPageForm,.aLoginPage .btn-group{
+        margin: auto !important;
+    }
+}
+@media(max-height: 740px){
+    .row:first-child{
+        background-image: none !important;
+        padding-top: 20px !important;
+    }
+    .aLoginPage .loginPageForm .loginpageSubmitDiv,.aLoginPage .loginPageForm .loginpageTextInput{
+        margin-top: 5px !important;
+    }
+    .loginPageForm{
+        height: 70vh;
+    }
+}
+@media(max-height: 570px){
+    .loginPageForm{
+        height: 80vh;
+    }
+}
+@media(max-width: 768px){
+    .loginPageForm,.aLoginPage .btn-group{
+        margin: auto !important;
+    }
+}
+/* @media (height: 1180px) and (min-width: 820px) {
+    .loginPageForm{
+        width: 100%;
+    }
+} */
+.error-input {
+    outline: 1px solid red !important;
+}

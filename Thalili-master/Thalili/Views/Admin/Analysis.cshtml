@@ -1,0 +1,127 @@
+﻿@using Thalili.Models;
+@model List<medical_analysis>
+@{
+    ViewBag.Title = "Analysis";
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+<main>
+    <div class="labOwnerPage container-flud">
+        <div class="row m-0">
+            <div class="col-2"></div>
+            <div class="col-10 leftCont pt-3 pe-3">
+                <i class="fa-solid fa-flask leftsvg"></i>
+                <h3 class="h3 d-inline lefth3 ">التحاليل</h3>
+                <small class="d-block pb-3">التحاليل</small>
+                <div class="leftCont-all">
+                    <div class="container pt-2 pb-5">
+                        <div>
+                            <p class="section-address">قائمة التحاليل</p>
+                            <div class="row table-head align-items-center">
+                                <div class="col-1">رقم المعرف</div>
+                                <div class="col-2">اسم التحليل</div>
+                                <div class="col-1">الصورة</div>
+                                <div class="col-1">العينات</div>
+                                <div class="col-5">الوصف</div>
+                                <div class="col-2">
+                                    <button type="button" class="btn btn-primary" onclick="window.location.href='/Admin/AddAnalysis'">إضافة تحليل جديد</button>
+                                </div>
+                            </div>
+                            @{int curent = Convert.ToInt32(ViewData["page"]);
+                            }
+                            @for (int i = (curent - 1) * 4; i < Math.Min(Model.Count(), 4 * curent); i++)
+                            {
+                                <div class="row talabt-item" id="Admin-Lab-item-1">
+                                    <div class="col-1 AnalysisID">@Model[i].medical_analysis_id</div>
+                                    <div class="col-2">@Model[i].name</div>
+                                    <div class="col-1"><a href="~/Content/Images/Analysis/@Model[i].img" target="_blank">@Model[i].name</a></div>
+                                    <div class="col-1">
+                                        <div class="row flex-column">
+                                            @foreach (var smpl in Model[i].samples)
+                                            {
+                                                <div class="col">@smpl.sample_name</div>
+
+                                            }
+
+                                        </div>
+                                    </div>
+                                    <div class="col-5">@Model[i].description</div>
+                                    <div class="col-2 d-flex justify-content-center">
+                                        <button type="button" class="btn ms-md-2 ms-4" style="width: 2rem; height:2rem;"><img src="~/Content/Assets/imgs/Group 855.png" alt="" onclick="window.location.href = '/Admin/EditAnalysis/@Model[i].medical_analysis_id'"></button>
+                                        <button type="button" class="btn" data-bs-toggle="modal" data-bs-target="#DeleteAnalsyis" onclick="sendAnalysisIdofDelete(this)" style="width: 2rem; height:2rem;"><img src="~/Content/Assets/imgs/Group 854.png" alt=""></button>
+                                    </div>
+                                </div>
+                            }
+                            <div class="modal" id="DeleteAnalsyis">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+                                        <!-- Modal Header -->
+                                        <div class="modal-header">
+                                            <h4 class="modal-title">مسح التحليل</h4>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal" style="position: absolute; left: 1rem;"></button>
+                                        </div>
+                                        <!-- Modal body -->
+                                        <div class="modal-body">
+                                            <div class="row align-items-center">
+                                                <img src="./Assets/imgs/Group 854.png" alt="" style="width: 3rem; height: 2rem;">
+                                                <p class="d-flex w-auto m-0"> هل انت متأكد انك تريد مسح التحليل</p>
+                                            </div>
+                                        </div>
+                                        <!-- Modal footer -->
+                                        <div class="modal-footer">
+                                            <a class="btn btn-primary" data-bs-dismiss="modal">لا</a>
+                                            <form action="/Admin/DeleteAnalysis" method="get" id="YesDeleteUser">
+                                                <input type="hidden" name="Delete_id" value="">
+                                                <button id="YesDeletebtn" type="submit" form="YesDeleteUser" class="btn btn-danger">امسح</button>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <nav class="paginat mt-4 mb-3">
+                                <ul class="d-flex justify-content-center" style="list-style:none;">
+
+                                    @for (int i = 1; i <= Math.Ceiling((Model.Count() * 1.0) / 4); i++)
+                                    {
+
+
+                                        if (i == curent)
+                                        {
+                                            <li class="page_item active" aria-current="page">
+                                                <span class="page_link">@i</span>
+                                            </li>
+                                        }
+                                        else
+                                        {
+                                            string pagination = Request.QueryString["page"];
+                                            if (pagination == null)
+                                            {
+                                                <li class="page_item "><a class="page_link" href="@Request.Url.AbsoluteUri?page=@i">@i</a></li>
+
+                                            }
+                                            else
+                                            {
+                                                string link = Request.Url.AbsoluteUri;
+                                                string newLink = "";
+                                                for (int j = 0; j < link.Length - 1; j++)
+                                                {
+                                                    newLink += link[j];
+                                                }
+                                                newLink += i.ToString();
+                                                <li class="page_item "><a class="page_link" href="@newLink">@i</a></li>
+                                            }
+                                        }
+
+
+                                    }
+
+
+                                </ul>
+                            </nav>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>

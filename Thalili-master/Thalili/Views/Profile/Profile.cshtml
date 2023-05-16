@@ -1,0 +1,45 @@
+﻿@using Thalili.Models;
+@model user
+@{
+    ViewBag.Title = "Profile";
+}
+
+<div class="FormPage d-flex" style="background-color: #F1F3F3;">
+    <div class="container">
+        <div class="row w-100 mx-0 mt-5 userHeader">
+            <div class="col-lg-6 col-md-8 col-sm-10 m-auto">
+                <p>تعديل معلومات الحساب</p>
+            </div>
+        </div>
+        <div class="row w-100 m-0">
+            <div class="col-lg-6 col-md-8 col-sm-10 mx-auto rounded-3 TheForm">
+                <form action="/Profile/SaveChanges" method="post" style="width:90%;margin:auto;">
+                    <div class="row m-0 mt-5">
+                        <label class="form-label mb-3">الاسم</label>
+                        <input class="col m-auto rounded-2 pe-2" type="text" name="name" value="@Model.name" required>
+                        <small>Error Message</small>
+                    </div>
+                    <div class="row m-0">
+                        <label class="form-label mb-3">البريد الالكترونى</label>
+                        <input class="col m-auto rounded-2 pe-2" type="email" name="email" value="@Model.email" readonly required oninvalid="this.setCustomValidity('Email is invalid')" oninput="this.setCustomValidity('')">
+                        <small>Error Message</small>
+                    </div>
+                    <div class="row m-0">
+                        <label class="form-label mb-3">كلمة المرور</label>
+                        <input class="col m-auto rounded-2 pe-2 py-2" type="password" name="pass" value="@Model.pass" required oninvalid="this.setCustomValidity('Password Should be greater than or equal 8')" oninput="this.setCustomValidity('')">
+                        <small>Error Message</small>
+                    </div>
+                    <div class="row m-0">
+                        <label class="form-label mb-3">رقم الهاتف</label>
+                        <input class="col m-auto rounded-2 pe-2" type="text" name="phone_number" value="@Model.phone_number" required>
+                        <small>Error Message</small>
+                    </div>
+                    <div class="row d-flex flex-row-reverse m-0 mt-3">
+                        <input class="col-4 rounded-2 px-0" type="submit" value="تعديل البيانات" name="" style="background-color: #5B79CC;">
+                    </div>
+                    <p style="color:green"> @TempData["SuccessMesssage"]</p>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

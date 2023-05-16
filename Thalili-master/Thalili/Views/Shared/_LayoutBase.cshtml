@@ -1,0 +1,175 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>
+        Thalili-تحاليلي
+    </title>
+    <link rel="icon" href="~/Content/Assets/imgs/Group 640.png" type="image/x-icon">
+    <!-- Main CSS File -->
+    <link rel="stylesheet" href="~/Content/Assets/css/master.css" asp-append-version="true">
+    <!-- BootStarp CSS File -->
+    <link rel="stylesheet" href="~/Content/Assets/css/bootstrap-5.1.3-dist/bootstrap.min.css" asp-append-version="true">
+    <!-- Fontawesome CSS File -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.0/css/all.min.css">
+    <!-- Fontawesome Js File -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.0/js/all.min.js"></script>
+    <script src="https://js.hcaptcha.com/1/api.js"></script>
+</head>
+<body>
+    <!-- Start Navbar -->
+    <nav class="navbar navbar-expand-md navbar-dark py-2">
+        <div class="container">
+            <div class="navbar-brand align-items-center"><a href="/home"><img src="~/Content/Assets/imgs/Group_798.PNG" alt="Logo"></a></div>
+            <div class="before-nav">
+                <a href="/cart">
+                    <i style="color:white; width: 2rem; height: 2rem;" class="fa-solid fa-cart-shopping"></i>
+                </a>
+                @{
+                    if (Session["userName"] != null)
+                    {
+                        <div>
+                            <button id="arrowBtn" type="button" onclick="arrow_clicked()"> <img id="arrow" src="~/Content/Assets/imgs/icons8_triangle_arrow.png" alt=""> </button>
+                            <div class="arrowMenu" data-Todisplay="arrowMenuShow">
+                                <div class="container">
+                                    <a>حسابك الشخصى</a>
+                                    <hr>
+                                    <div class="list-group">
+                                        <a href="/MyResults" class="list-group-item list-group-item-action"><img class="img-fluid ms-3" src="~/Content/Assets/imgs/icons8_test_passed.jpg" />نتائج التحاليل</a>
+                                        <a href="/Profile" class="list-group-item list-group-item-action"><img class="img-fluid ms-3" src="~/Content/Assets/imgs/icons8_settings_1.jpg" />تعديل معلومات الحساب</a>
+                                        <a href="/MyOrders" class="list-group-item list-group-item-action"><img class="img-fluid ms-3" src="~/Content/Assets/imgs/icons8_order_history.jpg" />طلباتي</a>
+                                        <a href="/Logout" class="list-group-item list-group-item-action"><img class="img-fluid ms-3" src="~/Content/Assets/imgs/icons8_Logout.jpg" />تسجيل خروج</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                    else
+                    {
+                        <div>
+                            <button id="arrowBtn" type="button" onclick="arrow_clicked()"> <img id="arrow" src="~/Content/Assets/imgs/icons8_triangle_arrow.png" alt=""> </button>
+                            <div class="arrowMenu" data-Todisplay="arrowMenuShow" style="height: fit-content !important">
+                                <div class="container">
+                                    <a href="/login">حسابك الشخصي</a>
+                                    <hr>
+                                    <div class="list-group">
+                                        <a href="/login" class="list-group-item list-group-item-action"><img class="img-fluid ms-3" src="~/Content/Assets/imgs/icons8_test_passed.jpg" />نتائج التحاليل</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                }
+                <span class="login">
+                    <span>مرحبا بك</span>
+                    @{
+                        if (Session["userName"] != null)
+                        {
+                            <a id="userName">@Session["userName"]</a>
+                        }
+                        else
+                        {
+                            <a href="/Login">تسجيل الدخول</a>
+                        }
+                    }
+                </span>
+            </div>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#menu-target">
+                <!-- </button> onclick="buttonClick()" class="button-list"> -->
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="menu-target">
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <a class="nav-link" href="/Home">
+                            <img src="~/Content/Assets/imgs/icons8_home.png" alt="Home Icon">
+                            <span>الرئيسية</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/Analysis_and_Labs">
+                            <img src="~/Content/Assets/imgs/icons8_experiment.png" alt="Experiment Icon">
+                            <span>التحاليل و المعامل</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="\JoinAsPartner">
+                            <img src="~/Content/Assets/imgs/icons8_handshake_heart.png" alt="Handshake Icon">
+                            <span>انضم كشريك</span>
+                        </a>
+                    </li>
+                    <li class="nav-item d-block d-md-none">
+                        @if (Session["userName"] != null)
+                        {
+                            <a href="/MyResults" class="list-group-item list-group-item-action"><img class="img-fluid ms-3" src="~/Content/Assets/imgs/icons8_test_passed.jpg" />نتائج التحاليل</a>
+                        }
+                    </li>
+                    <li class="nav-item d-block d-md-none">
+                        @if (Session["userName"] != null)
+                        {
+                            <a href="/Profile" class="list-group-item list-group-item-action"><img class="img-fluid ms-3" src="~/Content/Assets/imgs/icons8_settings_1.jpg" />تعديل معلومات الحساب</a>
+                        }
+                    </li>
+                    <li class="nav-item d-block d-md-none">
+                        @if (Session["userName"] != null)
+                        {
+                        <a href="/MyOrders" class="list-group-item list-group-item-action"><img class="img-fluid ms-3" src="~/Content/Assets/imgs/icons8_order_history.jpg" />طلباتي</a>
+                        }
+                    </li>
+                    <li class="nav-item d-block d-md-none">
+                        @if (Session["userName"] != null)
+                        {
+                            <a class="nav-link" href="/Logout">
+                                <span>تسجيل خروج</span>
+                            </a>
+                        }
+                        else
+                        {
+                            <a class="nav-link" href="/Login">
+                                <span>تسجيل دخول</span>
+                            </a>
+                        }
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+    <!-- End Navbar -->
+    <div>
+        @RenderBody()
+    </div>
+
+    <!-- Start Footer -->
+    <footer>
+        <div class="container py-5">
+            <div class="row m-0">
+                <div class="col-md-4 col-sm-12 flex-column">
+                    <div class="mb-3 head">عن التطبيق</div>
+                    <a href="#">شاركنا رايك</a>
+                    <a href="/JoinAsPartner">انضم كشريك</a>
+                    <a href="#">الشروط والاحكام</a>
+                    <a href="#">سياسة الخصوصية</a>
+                </div>
+                <div class="col-md-4 col-sm-12 flex-column">
+                    <div class="mb-3 head">المساعدة</div>
+                    <a href="#">من نحن</a>
+                    <a href="#">تواصل معنا</a>
+                    <a href="#">الأسئلة الشائعة</a>
+                </div>
+                <div class="col-md-4 col-sm-12 flex-row">
+                    <div class="mb-3 head">تابعنا الان</div>
+                    <a href="https://facebook.com"><img src="~/Content/Assets/imgs/icons8_Facebook_3.png" alt=""></a>
+                    <a href="https://instagram.com"><img src="~/Content/Assets/imgs/icons8_Instagram_1.png" alt=""></a>
+                    <a href="https://twitter.com"><img src="~/Content/Assets/imgs/icons8_twitter.png" alt=""></a>
+                    <a href="https://whatsapp.com"><img src="~/Content/Assets/imgs/icons8_whatsapp.png" alt=""></a>
+                </div>
+            </div>
+        </div>
+    </footer>
+    <!-- End Footer -->
+    <script src="~/Content/Assets/js/master.js" asp-append-version="true"></script>
+    <script src="~/Content/Assets/js/bootstrap-5.1.3-dist/bootstrap.min.js" asp-append-version="true"></script>
+</body>
+</html>

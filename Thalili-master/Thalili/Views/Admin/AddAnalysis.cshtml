@@ -1,0 +1,61 @@
+﻿@using Thalili.Models
+@model List<sample>
+@{
+    ViewBag.Title = "AddAnalysis";
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+<main>
+    <div class="labOwnerPage container-flud">
+        <div class="row m-0">
+            <div class="col-2"></div>
+            <div class="col-10 leftCont pt-3 pe-3">
+                <i class="fa-solid fa-flask leftsvg"></i>
+                <h3 class="h3 d-inline lefth3 ">التحاليل</h3>
+                <small class="d-block pb-3">التحاليل&nbsp;&gt;&gt;&nbsp;إضافة تحليل جديد</small>
+                <div class="row w-50 m-auto adminAddThalilPage">
+                    <div class="container">
+                        <div class="leftCont-all">
+                            <div class="container pt-2 pb-5 rounded-3 mb-5">
+                                <div>
+                                    <p class="section-address">إضافة تحليل جديد</p>
+                                    <form action="/Admin/Save_Analysis" method="post" enctype="multipart/form-data">
+                                        <div class="row mb-3 align-items-center">
+                                            <label class="col-3 lab-label" for="Ad_Thalilname">اسم التحليل</label>
+                                            <input class="col-8" type="text" name="name" id="Ad_Thalilname" required>
+                                        </div>
+                                        <div class="row mb-3 align-items-center">
+                                            <label class="col-2 lab-label" for="Ad_ThalilImage">الصورة</label>
+                                            <input class="col-8" type="file" name="file" id="Ad_ThalilImage" onchange="clearChangeImage(this)" accept="image/png, image/gif, image/jpeg" required>
+                                            <button type="button" class="col-1 btn btn-close d-none" onclick="removeImage(this)"></button>
+                                        </div>
+                                        <div class="row mb-3 align-items-center">
+                                            <label class="col-2 lab-label" for="Ad_ThalilSample">العينة</label>
+                                            <input class="col-8" list="samples" name="sample" id="Ad_ThalilSample" required>
+                                            <datalist class="col-4" id="samples">
+                                                @foreach (var smple in Model)
+                                                {
+                                                   <option value="@smple.sample_name"/>
+                                                }
+                                                </datalist>
+                                            </div>
+                                            <div class="row mb-3 align-items-center">
+                                                <label class="col-2 mb-2 lab-label" for="Ad_Thalildescribe">الوصف</label>
+                                                <textarea name="description" rows="8" id="Ad_Thalildescribe" required></textarea>
+                                            </div>
+                                            <div class="row justify-content-evenly align-items-center">
+                                                <button type="button" class="col-4 btn btn-outline-primary" onclick="window.location.href='/Admin/Analysis'">تجاهل التحليل</button>
+                                                <input type="submit" class="col-4 me-3 btn btn-primary" value="اضافة التحليل">
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+

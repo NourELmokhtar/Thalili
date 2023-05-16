@@ -1,0 +1,147 @@
+﻿@using Thalili.Models
+@model List<lab>
+@{
+    ViewBag.Title = "Index";
+}
+
+<main>
+    <!-- Start Search Section -->
+    <div class="mainPage-searchSection">
+        <div class="container h-100">
+            <div class="row h-100 m-0 text-center justify-content-center align-items-center">
+                <div class="col-xxl-12 col-xl-10 col-lg-8 col-md-10 col-12">
+                    <img src="~/Content/Assets/imgs/Group 640.png" alt="">
+                    <p>صحة وامان لكل المرضى</p>
+                    <form action="/search" method="get">
+                        <div>
+                            <input class="mySearchField" type="search" name="searchField" id="mainPage-searchField" placeholder="ابحث عن تحاليل او معامل">
+                            @*<select id="searchList" name="List">
+                                    <option value="all"> بحث في الكل </option>
+                                    <option value="labs">معامل</option>
+                                    <option value="analysis">تحاليل</option>
+                                </select>*@
+                            <input class="mySubmit-btn" type="submit" value="" id="mainPage-submitBtn">
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <div class="socialBox">
+                <div>
+                    <a href="https://facebook.com"><img src="~/Content/Assets/imgs/icons8_Facebook_3.png" alt=""></a>
+                    <a href="https://instagram.com"><img src="~/Content/Assets/imgs/icons8_Instagram_1.png" alt=""></a>
+                    <a href="https://twitter.com"><img src="~/Content/Assets/imgs/icons8_twitter.png" alt=""></a>
+                    <a href="https://whatsapp.com"><img src="~/Content/Assets/imgs/icons8_whatsapp.png" alt=""></a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- End Search Section -->
+    <!-- Start About Section -->
+    <div class="mainPage-aboutSection">
+        <div class="topPart">
+            <div class="container">
+                <div class="row justify-content-center align-items-center">
+                    <div class="col-4 right">
+                        <img src="~/Content/Assets/imgs/Group 656.png" alt="">
+                    </div>
+                    <div class="col-8 left">
+                        <h2 class="h2 mb-5">من نحن ؟</h2>
+                        <p>
+                            خدمة تحاليلي هي خدمة تشمل معظم المعامل الموجودة بداخل مصر وهي تساهم في جعل استخدام المعامل واخذ التحاليل اكثر سهولة من منزلك
+                            عن طريق التسجيل والبحث عن التحليل المراد والمعمل المناسب لك من حيث السعر والمكان وطلب عميل لاخذ العينات المرادة من المريض
+                            ويمكنك متابعة نتائج التحاليل عن طريق الحساب الخاص بك
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="bottomPart">
+            <div class="container">
+                <div class="row d-flex flex-md-row flex-column justify-content-around align-items-center">
+                    <div class="col-lg-3 col-md-4 col-6  d-flex justify-content-center">
+                        <img src="~/Content/Assets/imgs/icons8_sand_timer.png" alt="">
+                        <p class="me-2">
+                            سرعة
+                            <br>
+                            في النتائج
+                        </p>
+                    </div>
+                    <div class="col-lg-3 col-md-4 col-6 d-flex justify-content-center">
+                        <img src="~/Content/Assets/imgs/icons8_user_shield.png" alt="">
+                        <p class="me-2">
+                            أمان
+                            <br>
+                            للمريض
+                        </p>
+                    </div>
+                    <div class="col-lg-3 col-md-4 col-6 d-flex justify-content-center flex-*-shrink-0">
+                        <img src="~/Content/Assets/imgs/icons8_cardboard_box.png" alt="">
+                        <p class="me-2">
+                            مندوب لأخذ
+                            <br>
+                            العينات
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- End About Section -->
+    <!-- Start Near Labs -->
+    <div class="mainPage-nearLabs">
+        <div class="container">
+            <div class="row m-0 pt-5">
+                <h2>المعامل الاعلى تقييما</h2>
+            </div>
+            <div class="row m-0 align-items-center justify-content-end">
+                <div class="w-auto dropdown dropstart">
+                    <a href="/Analysis_and_Labs" class="btn btn-outline-secondary dropdown-toggle">مشاهدة الكل</a>
+                </div>
+            </div>
+            <div class="row m-0 justify-content-between" id="cards">
+                @foreach (var lab in Model)
+                {
+                <div class="card">
+                    <img src="~/Content/Images/Labs/@lab.img" alt="">
+                    <p>@lab.name</p>
+                    <div class="evaluate">
+                        @for(int i=0;i<lab.lab_rating;i++)
+                        {
+                        <i class="fa fa-star"></i>
+                        }
+                        <span>(@lab.reviews.Count)</span>
+                    </div>
+                    <div class="labLocation">
+                        <img src="~/Content/Assets/imgs/Exclusion 10.png" alt="">
+                        <span>@lab.location</span>
+                    </div>
+                    <button type="button" class="btn btn-primary my-4" onclick="window.location.href ='/Analysis_and_Labs/lab/@lab.lab_id'">المزيد من التفاصيل</button>
+                </div>
+                }
+            </div>
+        </div>
+    </div>
+    <!-- End Near Labs -->
+    <!-- Start Partner Section -->
+    <div class="mainPage-partnerSection">
+        <div class="layer py-5">
+            <div class="container">
+                <div class="row m-0 justify-content-around">
+                    <div class="col-4 right">
+                        <img src="~/Content/Assets/imgs/icons8_lab_items.png" alt="">
+                        <p class="mt-5">إضافة معملك الخاص</p>
+                    </div>
+                    <div class="col-md-7 col-sm-12 left">
+                        <h2 class="mb-4">انضم كشريك</h2>
+                        <p>
+                            خدمة تحاليلي تساهم في ضم جميع المعامل علي مستوي مصر وذلك لسهولة التواصل بين العميل والمعمل وتوفير الوقت.
+                            عن طريق خدمة تحاليلي يمكن لمعملك التواجد اكثر بين عملائنا المستمرين والوصول الي عملاء اكثر بالقرب من مكان معملك الجغرافي.
+                        </p>
+                        <a class="btn mt-3" href="/JoinAsPartner" style="background-color: #f79a3d; color: white;">المزيد من التفاصيل</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- End Partner Section -->
+</main>

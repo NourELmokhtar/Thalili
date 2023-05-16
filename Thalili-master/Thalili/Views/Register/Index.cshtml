@@ -1,0 +1,124 @@
+﻿
+@{
+    ViewBag.Title = "register";
+}
+
+
+<main>
+    <div class="FormPage aLoginPageForUser">
+        <div class="container-xl">
+            <div class="row w-100 p-0 m-0 pt-5">
+                <div class="form-headline col-lg-6 col-md-8 col-sm-10">
+                    <p>تسجيل حساب</p>
+                </div>
+            </div>
+            <div class="row w-100 m-0">
+                <div class="col-lg-6 col-md-8 col-sm-10 TheForm" id="registerForm">
+                    <form class="align-middle" action="/Register/RegisterConfirm" method="post" style="width:90%;margin:auto;">
+                        <h3 class="h3 pt-3">مستخدم عادي</h3>
+                        <p>تسجيل الحساب كمستخدم عادي يتيح لك إمكانيات اختيار التحاليل والمعامل وطلب عميل لاخذ العينات اللازمة</p>
+                        <p style="color:red">@ViewData["ERoor"]</p>
+                        <div class="row m-0 mt-5 loginpageTextInput" style="position: relative;">
+                            <input class="col m-auto rounded-2" type="text" name="name" id="userNameField" placeholder="الاسم" value="@ViewData["Name"]" autofocus required>
+                            <small>Error Message</small>
+                            <label for="userNameField"><img src="~/Content/Assets/imgs/icons8_user_2.png" alt="" style="position: absolute; top:13px;"></label>
+                        </div>
+
+                        <div class="row m-0" style="position: relative;">
+                            <input class="col m-auto mt-4 rounded-2" type="email" name="email" id="emailField" placeholder="البريد الالكتروني" value="@ViewData["Email"]" required>
+                            <small>Error Message</small>
+                            <label for="passwordField"><img src="~/Content/Assets/imgs/icons8_email_sign_2.svg" alt="" style="position: absolute; top: 50%;transform: translate(0, -50% );"></label>
+                        </div>
+
+
+                        <div class="row m-0" style="position: relative;">
+                            <input class="col m-auto mt-4 rounded-2" type="text" name="phone_number" id="phone_filed" placeholder="رقم الهاتف" value="@ViewData["Phone"]" required>
+                            <small>Error Message</small>
+                            <label for="phone_filed"><img src="~/Content/Assets/imgs/icons8_email_sign_2.svg" alt="" style="position: absolute; top: 50%;transform: translate(0, -50% );"></label>
+                        </div>
+
+
+
+                        <div class="row m-0" style="position: relative;">
+                            <input class="col m-auto mt-4 rounded-2" type="password" name="pass" id="passwordField" placeholder="الرقم السري" required>
+                            <small>Error Message</small>
+                            <label for="passwordField"><img src="~/Content/Assets/imgs/icons8_key.png" alt="" style="position: absolute; top: 50%;transform: translate(0, -50% );"></label>
+                        </div>
+                        <div class="row m-0" style="position: relative;">
+                            <input class="col m-auto mt-4 rounded-2" type="password" name="confirmPass" id="confirmpasswordField" placeholder="تأكيد الرقم السري" required>
+                            <small>Error Message</small>
+                            <label for="passwordField"><img src="~/Content/Assets/imgs/icons8_key.png" alt="" style="position: absolute; top: 50%;transform: translate(0, -50% );"></label>
+                        </div>
+                        @*<div class="h-captcha" data-sitekey="b1ff7069-2c12-4204-a1d0-aff00d26f9b5">
+        </div>*@
+                        <div class="row m-0 mt-5">
+                            <input class="col-md-5 m-auto mt-3 rounded-2 px-0" type="submit" value="تسجيل حساب" name="" id="submitBtn">
+                            <a href="/Login" id="createAccountbtn" class="col-md-5 m-auto mt-3 rounded-2 px-0">تسجيل دخول</a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <div class="layer"></div>
+        </div>
+    </div>
+</main>
+
+
+
+
+
+
+
+
+
+
+
+
+@*<main>
+    <div class="aLoginPage aLoginPageForUser">
+        <div class="container-xl">
+            <div class="row w-100 p-0 m-0 pt-5">
+                <div class="form-headline col-lg-6 col-md-8 col-sm-10 p-0 btn-group" id="login-change-btns">
+                    <p>تسجيل حساب</p>
+                </div>
+            </div>
+            <div class="row w-100 m-0">
+                <div class="col-lg-6 col-md-8 col-sm-10 loginPageForm">
+                    <form class="align-middle" action="/Register/RegisterConfirm" method="post" style="width:90%;margin:auto;">
+                        <h3 class="h3 pt-3">مستخدم عادي</h3>
+                        <p>هذا النص هو مثال لنص يمكن أن يستبدل في نفس المساحة، لقد تم توليد هذا النص من مولد النص العربى</p>
+                        <p style="color:red">@ViewData["ERoor"]</p>
+                        <div class="row m-0 mt-5 loginpageTextInput" style="position: relative;">
+                            <input class="col m-auto rounded-2" type="text" name="name" id="userNameField" placeholder="الاسم" value="@ViewData["Name"]" autofocus required>
+                            <label for="userNameField"><img src="~/Content/Assets/imgs/icons8_user_2.png" alt="" style="position: absolute; top:13px;"></label>
+                        </div>
+
+                        <div class="row m-0" style="position: relative;">
+                            <input class="col m-auto mt-4 rounded-2" type="email" name="email" id="emailField" placeholder="البريد الالكتروني" value="@ViewData["Email"]" required>
+                            <label for="passwordField"><img src="~/Content/Assets/imgs/icons8_email_sign_2.svg" alt="" style="position: absolute; top:43px;"></label>
+                        </div>
+
+
+                        <div class="row m-0" style="position: relative;">
+                            <input class="col m-auto mt-4 rounded-2" type="password" name="pass" id="passwordField" placeholder="الرقم السري" value="@ViewData["Password"]" required>
+                            <label for="passwordField"><img src="~/Content/Assets/imgs/icons8_key.png" alt="" style="position: absolute; top:43px;"></label>
+                        </div>
+
+
+
+                        <div class="row m-0" style="position: relative;">
+                            <input class="col m-auto mt-4 rounded-2" type="password" name="confirmPass" id="confirmpasswordField" placeholder="تأكيد الرقم السري" value="@ViewData["Password"]" required>
+                            <label for="passwordField"><img src="~/Content/Assets/imgs/icons8_key.png" alt="" style="position: absolute; top:43px;"></label>
+                        </div>
+                        <div class="row m-0 mt-5 loginpageSubmitDiv">
+                            <input class="col-md-5 m-auto mt-3 rounded-2 px-0" type="submit" value="تسجيل دخول" name="" id="submitBtn">
+                            <button id="createAccountbtn" class="col-md-5 m-auto mt-3 rounded-2 px-0" type="button">تسجيل حساب</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <div class="layer"></div>
+        </div>
+    </div>
+    
+</main>*@

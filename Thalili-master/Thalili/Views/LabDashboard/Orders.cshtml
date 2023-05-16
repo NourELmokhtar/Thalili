@@ -1,0 +1,228 @@
+﻿@using Thalili.Models
+@model List<List<sub_order>>
+@{
+ ViewBag.Title = "Orders";
+ Layout = "~/Views/Shared/_LayoutDashboard.cshtml";
+}
+@{int curent = Convert.ToInt32(ViewData["page"]); }
+<div class="labOwnerPage container-flud">
+ <div class="row m-0">
+  <div class="col-2"></div>
+  <div class="col-10 leftCont pt-3 pe-3" id="Talbat">
+   <i class="fa-solid fa-list-check leftsvg"></i>
+   <h3 class="h3 d-inline lefth3">الطلبــــات</h3>
+
+   <button id="ToggleBtn" type="button" class="toggleArea" data-stat="@TempData["avaliable"]" onclick="LabAvailable(this)">
+    <span class="toggleHandle"></span>
+   </button>
+   <form action="/LabDashboard/Lab_Avaliable" method="post" id="AvaliableForm">
+    <input type="hidden" name="is_avaliable" value="" />
+   </form>
+   <small class="d-block pb-3">مرحبا بك مجددا</small>
+   <div class="leftCont-all">
+    <div class="container pt-2 pb-5">
+     <div id="modernOrderes">
+      <p class="section-address">الطلبات الحديثة</p>
+      <div class="row table-head">
+       <div class="col">معرف الطلب</div>
+       <div class="col">اسم العميل</div>
+       <div class="col">تاريخ الطلب</div>
+       <div class="col-5">
+        <div class="row flex-row text-center">
+         <div class="col">اسم التحليل</div>
+         <div class="col">العينات</div>
+         <div class="col">العدد</div>
+        </div>
+       </div>
+       <div class="col">العنوان</div>
+       <div class="col">رقم المحمول</div>
+       <div class="col"></div>
+      </div>
+      @{ int ordID = 0;}
+      @foreach (var ord in Model.First())
+      {
+       if (ordID == ord.order_id || ord.order.is_accept == false)
+       {
+        continue;
+       }
+       <div class="row talabt-item" id="talabat-item-1">
+        <div class="col">@ord.order_id</div>
+        <div class="col">@ord.user.name</div>
+        <div class="col">@ord.order.date.Value.ToString("MM/dd/yyyy")</div>
+        <div class="col-5">
+         @foreach (var ords in Model.First())
+         {
+          if (ords.user_id == ord.user_id && ords.order_id == ord.order_id && ord.order.is_accept != false)
+          {
+           <div class="row flex-row text-center">
+            <div class="row mb-2 p-0">
+             <div class="col align-self-center tahlilName">@ords.analysis_in_lab.medical_analysis.name</div>
+             <div class="col">
+              <div class="row flex-column">
+               @foreach (var item in ords.analysis_in_lab.medical_analysis.samples.ToList())
+               {
+                <div class="col">@item.sample_name</div>
+               }
+              </div>
+             </div>
+             <div class="col align-self-center">@ords.count</div>
+            </div>
+           </div>
+          }
+         }
+        </div>
+        <div class="col">@ord.order.location</div>
+        <div class="col">@ord.user.phone_number</div>
+        <div class="col d-flex flex-column h-100 justify-content-around talabt-item-buttons">
+         <div class="row">
+          <button name="" class="btn btn-primary px-2 mb-3" onclick="location.href = '/LabDashboard/SendClient/@ord.order_id'">ارسال المندوب&nbsp;<i class="fa-solid fa-angle-left"></i></button>
+          <button class="btn btn-danger px-2 mb-3" data-bs-toggle="modal" data-bs-target="#RefuseOrder" onclick="RefuseOrderfun(this)">رفض الطلب&nbsp;<i class="fa-solid fa-angle-left"></i></button>
+         </div>
+        </div>
+       </div>
+       ordID = ord.order_id;
+      }
+      <div id="oKOredered">
+       <p class="section-address">الطلبات الملباة</p>
+       <div class="row table-head">
+        <div class="col">معرف الطلب</div>
+        <div class="col">اسم العميل</div>
+        <div class="col">تاريخ الطلب</div>
+        <div class="col-5">
+         <div class="row flex-row text-center">
+          <div class="col">اسم التحليل</div>
+          <div class="col">العينات</div>
+          <div class="col">العدد</div>
+         </div>
+        </div>
+        <div class="col">العنوان</div>
+        <div class="col">رقم المحمول</div>
+        <div class="col"></div>
+       </div>
+       @{ordID = 0;
+       }
+       @for (int i = (curent - 1) * 4; i < Math.Min(Model.Last().Count(), 4 * curent); i++)
+       {
+        if (ordID == Model.Last()[i].order_id || Model.Last()[i].order.is_sent == false)
+        {
+         continue;
+        }
+        <div class="row talabt-item" id="okOrder-item-1">
+         <div class="col">@Model.Last()[i].order_id</div>
+         <div class="col">@Model.Last()[i].user.name</div>
+         <div class="col">@Model.Last()[i].order.date.Value.ToString("MM/dd/yyyy")</div>
+         <div class="col-5">
+          @foreach (var subord in Model.Last())
+          {
+           if (subord.user_id == Model.Last()[i].user_id && subord.order_id == Model.Last()[i].order_id)
+           {
+            <div class="row flex-row text-center">
+             <div class="row mb-2 p-0">
+              <div class="col align-self-center tahlilName">@subord.analysis_in_lab.medical_analysis.name</div>
+              <div class="col">
+               <div class="row flex-column">
+                @foreach (var smple in subord.analysis_in_lab.medical_analysis.samples.ToList())
+                {
+                 <div class="col">@smple.sample_name</div>
+                }
+               </div>
+              </div>
+              <div class="col align-self-center">@subord.count</div>
+             </div>
+            </div>
+           }
+          }
+         </div>
+         <div class="col">@Model.Last()[i].order.location</div>
+         <div class="col">@Model.Last()[i].user.phone_number</div>
+         <div class="col">
+          <small style="color: #5B79CC;">تم ارسال المندوب</small>
+          @foreach (var subord in Model.Last())
+          {
+           if (subord.user_id == Model.Last()[i].user_id && subord.order_id == Model.Last()[i].order_id)
+           {
+            if (subord.is_finshed == true)
+            {
+             <div class="row">
+              <p class="m-0" style="color: #5B79CC;">تم رفع نتيجه التحليل</p>
+              <a href="~/Content/Results/@subord.pdf" target="_blank">عرض النتيجه</a>
+             </div>
+            }
+            else
+            {
+             <div class="row">
+              <input type="hidden" name="user_id" value="@subord.user_id" />
+              <input type="hidden" name="analysis_id" value="@subord.medical_analysis_id" />
+              <button type="button" class="btn btn-primary px-2 mb-3" data-bs-toggle="modal" data-bs-target="#Uploadpdf" onclick="uploadpdf(this)">رفع نتيجة التحليل&nbsp;<i class="fa-solid fa-angle-left"></i></button>
+             </div>
+            }
+           }
+          }
+         </div>
+        </div>
+        ordID = Model.Last()[i].order_id;
+       }
+      </div>
+      <div class="modal" id="Uploadpdf">
+       <div class="modal-dialog">
+        <div class="modal-content">
+         <!-- Modal Header -->
+         <div class="modal-header">
+          <h4 class="modal-title">رفع النتيجه</h4>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" style="position: absolute; left: 1rem;"></button>
+         </div>
+         <!-- Modal body -->
+         <div class="modal-body">
+          <form id="UploadPdfform" method="post" action="/LabDashboard/UploadPdf" enctype="multipart/form-data">
+           <input type="hidden" />
+           <input type="hidden" />
+           <input type="file" name="file" accept=".pdf" required />
+          </form>
+         </div>
+         <!-- Modal footer -->
+         <div class="modal-footer">
+          <a class="btn btn-danger" data-bs-dismiss="modal">إلغاء</a>
+          <button id="YesUpload" type="submit" form="UploadPdfform" class="btn btn-danger">تأكيد</button>
+         </div>
+        </div>
+       </div>
+      </div>
+      <div class="modal" id="RefuseOrder">
+       <div class="modal-dialog">
+        <div class="modal-content">
+         <!-- Modal Header -->
+         <div class="modal-header">
+          <h4 class="modal-title">رفع النتيجه</h4>
+          <button type="button" class="btn-close" data-bs-dismiss="modal"
+                  style="position: absolute; left: 1rem;"></button>
+         </div>
+         <!-- Modal body -->
+         <div class="modal-body">
+          <p class="d-flex w-auto m-0"> هل أنت متأكد من رفض الطلب؟</p>
+         </div>
+         <!-- Modal footer -->
+         <div class="modal-footer">
+          <a class="btn btn-danger" data-bs-dismiss="modal">إلغاء</a>
+          <form action="/LabDashboard/Reject_order" method="post" id="YesRefuse">
+           <input type="hidden" name="id" value="" />
+           <button id="YesRefusebtn" type="submit" form="YesRefuse"
+                   class="btn btn-danger">
+            تأكيد
+           </button>
+          </form>
+         </div>
+        </div>
+       </div>
+      </div>
+      @{ int max_num_of_pages = Math.Max((int)Math.Ceiling((Model.Last().Count * 1.0) / 4), 1);}   @*paging*@
+      <div class="text-center pt-5">
+       <a href="/LabDashboard/Orders/?page=@(Math.Min(curent+1,max_num_of_pages))"><i class="fa-solid fa-circle-right"></i></a>
+       <span>page <span class="currentpage">@curent</span> of <span class="allpages">@max_num_of_pages</span></span>
+       <a href="/LabDashboard/Orders/?page=@(Math.Max(curent-1,1))"><i class="fa-solid fa-circle-left"></i></a>
+      </div>
+     </div>
+    </div>
+   </div>
+  </div>
+ </div>
+</div>

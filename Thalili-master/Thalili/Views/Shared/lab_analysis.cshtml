@@ -1,0 +1,231 @@
+﻿@using Thalili.Models
+@model search_view
+@{
+    ViewBag.Title = "Index";
+}
+<div class="searchPage">
+    <div class="container">
+        <form action="/search" class="row pt-5 w-75">
+            <div style="position: relative;">
+                <input class="mySearchField" type="search" name="searchField" placeholder="ابحث عن تحاليل او معامل" value="@ViewData["searchField"]">
+                <input class="mySubmit-btn" type="submit" value="">
+            </div>
+        </form>
+        <div class="row m-0 py-3 mySearchResult">
+            <div class="col-9">
+                @if (Model.analysisList != null)
+                {
+                    int c = -1;
+                    <div class="testResult">
+                        <p>نتائج التحاليل</p>
+                        @if (Model.analysisList.Count < 1)
+                        {
+                            <p style="color: black;">لا يوجد نتائج في المعامل</p>
+                        }
+                        <div class="row flex-column flex-md-row">
+                            @foreach (var analyss in Model.analysisList)
+                            {
+                                if (c >= 2)
+                                {
+                                    <a class="col-9 col-sm-6 col-md-3 m-auto mt-4 m-md-0 ms-md-3  px-2 testSearchCard" href="/Analysis_and_Labs/analysis/@analyss.medical_analysis_id" style="display:none">
+                                        <img class="mt-2 d-flex mx-auto" src="~/Content/Images/Analysis/@analyss.img" alt="" style=" width: 80%; height: 104px;">
+                                        <p class="pt-2 m-2 m-md-0">@analyss.name</p>
+                                        <span class="m-2 m-md-0">@analyss.description </span>
+                                        <ul class="m-0 mt-2">
+                                            @foreach (var sampl in analyss.samples)
+                                            {
+                                                <li class="tag p-1 ms-1 mt-1">@sampl.sample_name</li>
+                                            }
+                                        </ul>
+                                        <button type="button" class="btn d-flex mx-auto my-3 justify-content-center" onclick="@analyss.medical_analysis_id">المزيد من التفاصيل</button>
+                                    </a>
+                                }
+                                else
+                                {
+                                    <a class="col-9 col-sm-6 col-md-3 m-auto mt-4 m-md-0 ms-md-3  px-2 testSearchCard" href="/Analysis_and_Labs/analysis/@analyss.medical_analysis_id" style="display:block">
+                                        <img class="mt-2 d-flex mx-auto" src="~/Content/Images/Analysis/@analyss.img" alt="" style="width:80%; height:104px">
+                                        <p class="pt-2 m-2 m-md-0">@analyss.name</p>
+                                        <span class="m-2 m-md-0">@analyss.description </span>
+                                        <ul class="m-0 mt-2">
+                                            @foreach (var sampl in analyss.samples)
+                                            {
+                                                <li class="tag p-1 ms-1 mt-1">@sampl.sample_name</li>
+                                            }
+                                        </ul>
+                                        <button type="button" class="btn d-flex mx-auto my-3 justify-content-center" onclick="@analyss.medical_analysis_id">المزيد من التفاصيل</button>
+                                    </a>
+                                }
+                                c++;
+                            }
+                            @if (c >= 2)
+                            {
+                                <div class="col-1" style="position: relative;">
+                                    <button class="carousel-control-prev d-none d-md-flex" type="button" id="nextElementBtn" onclick="go_next_item(this)">
+                                        <i class="fa-solid fa-chevron-left"></i>
+                                    </button>
+                                </div>
+                            }
+                        </div>
+                    </div>
+                }
+                @if (Model.labList != null)
+                {
+                    <div class="labResult">
+                        <p>نتائج المعامل</p>
+                        @if (Math.Ceiling((Model.labList.Count() * 1.0) / 4) < 1)
+                        {
+                            <p style="color: black;">لا يوجد نتائج في المعامل</p>
+                        }
+                        @{int curent = Convert.ToInt32(ViewData["page"]);
+                        }
+                        @for (int i = (curent - 1) * 4; i < Math.Min(Model.labList.Count(), 4 * curent); i++)
+                        {
+                            <div class="row flex-column flex-md-row my-3">
+                                <a href="/Analysis_and_Labs/lab/@Model.labList[i].lab_id" class="col-9 col-sm-6 col-md m-auto mt-4  m-md-0 ms-md-3 labSearchCard py-3 row flex-column flex-md-row">
+                                    <div class="d-flex col-xl-3 col-md-4 col-12 m-auto m-md-0">
+                                        <img class="m-auto" src="~/Content/Images/Labs/@Model.labList[i].img" alt="" style="height: 136px; width:100%">
+                                    </div>
+                                    <div class="col-md">
+                                        <div class="row justify-content-between">
+                                            <p class="m-2 m-md-0 d-inline-block w-auto">@Model.labList[i].name</p>
+                                            @if (@Model.labList[i].is_available == true)
+                                            {
+                                                <small class="m-2 m-md-0 d-inline-block w-auto" style="color: #43AF5C; font-weight:600;">متاح لاستقبال طلبات&nbsp;&nbsp;<i class="fa-solid fa-circle" style="color: #43AF5C;"></i></small>
+                                            }
+                                            else
+                                            {
+                                                <small class="m-2 m-md-0 d-inline-block w-auto" style="color: #D43E3E; font-weight: 600;">غير متاح لاستقبال طلبات&nbsp;&nbsp;<i class="fa-solid fa-circle" style="color: #D43E3E;"></i></small>
+                                            }
+                                        </div>
+                                        <div class="evaluation m-2 m-md-0" style="word-spacing: -10px;">
+                                            @for (int j = 0; j < Model.labList[i].lab_rating; j++)
+                                            {
+                                                <i class="fa fa-star"></i>
+                                            }
+                                            <small>(@Model.labList[i].reviews.Count())</small>
+                                        </div>
+                                        <div class="location m-2 m-md-0">
+                                            <img src="~/Content/Assets/imgs/Exclusion 10.png" alt="">
+                                            <small>@Model.labList[i].location</small>
+                                        </div>
+                                       
+                                    </div>
+                                </a>
+                            </div>
+                        }
+                    </div>
+                    <nav class="paginat mt-3 mb-3">
+                        <ul class="d-flex justify-content-center" style="list-style:none;">
+                            <li class="page_item_arrow d-none"><i class="fa-solid fa-angle-right"></i></li>
+                            @for (int i = 1; i <= Math.Ceiling((Model.labList.Count() * 1.0) / 4); i++)
+                            {
+                                if (i == curent)
+                                {
+                                    <li class="page_item active" aria-current="page">
+                                        <span class="page_link">@i</span>
+                                    </li>
+                                }
+                                else
+                                {
+                                    string pagination = Request.QueryString["page"];
+                                    string searchField = Request.QueryString["searchField"];
+                                    if (pagination == null)
+                                    {
+                                        if (searchField == null)
+                                        {
+                                            <li class="page_item"><a class="page_link" href="@Request.Url.AbsoluteUri?page=@i">@i</a></li>
+                                        }
+                                        else
+                                        {
+                                            <li class="page_item"><a class="page_link" href="@Request.Url.AbsoluteUri&page=@i">@i</a></li>
+
+                                        }
+                                    }
+                                    else
+                                    {
+                                        string link = Request.Url.AbsoluteUri;
+                                        string newLink = "";
+                                        for (int j = 0; j < link.Length - 1; j++)
+                                        {
+                                            newLink += link[j];
+                                        }
+                                        newLink += i.ToString();
+                                        <li class="page_item"><a class="page_link" href="@newLink">@i</a></li>
+                                    }
+                                }
+                            }
+                        </ul>
+                    </nav>
+
+                }
+
+
+            </div>
+            <div class="col-3 filtterPart">
+                <div class="container pt-3">
+                    <p>التصفيات</p>
+                    <hr>
+                    <form action="/Search/filters" method="get" id="filtterForm">
+                        <input type="hidden" name="searchField" value="@ViewData["searchField"]">
+                        <div>
+                            <a class="collapsed d-flex flex-row justify-content-between" data-bs-toggle="collapse" href="#TypeofSearch">
+                                <p class="mb-1">بحث في</p>
+                                <i class="fa-solid fa-chevron-down"></i>
+                            </a>
+                            <div class="collapse show filtterOptions" id="TypeofSearch">
+                                <input type="radio" id="typeAll" name="typeofsearch" value="All" checked>
+                                <label for="typeAll"> الكل</label><br>
+                                <input type="radio" id="typeLabs" name="typeofsearch" value="Labs">
+                                <label for="typeLabs"> المعامل</label><br>
+                                <input type="radio" id="typeTest" name="typeofsearch" value="Analysis">
+                                <label for="typeTest"> التحاليل</label>
+                            </div>
+                        </div>
+
+                        <div>
+                            <a class="collapsed d-flex flex-row justify-content-between" data-bs-toggle="collapse" href="#Evaluatin">
+                                <p class="mb-1"> التقييم</p>
+                                <i class="fa-solid fa-chevron-down"></i>
+                            </a>
+                            <div class="collapse show filtterOptionsstar" id="Evaluatin">
+                                <input type="radio" id="allEval" name="rating" value="6" checked>
+                                <label for="allEval"> الكل</label><br>
+                                <input type="radio" id="fiveEval" name="rating" value="5">
+                                <label for="fiveEval" style="word-spacing: -10px;">
+                                    <i class="fa fa-star col p-0"></i>
+                                    <i class="fa fa-star col p-0"></i>
+                                    <i class="fa fa-star col p-0"></i>
+                                    <i class="fa fa-star col p-0"></i>
+                                    <i class="fa fa-star col p-0"></i>
+                                </label><br>
+                                <input type="radio" id="fourEval" name="rating" value="4">
+                                <label for="fourEval" style="word-spacing: -10px;">
+                                    <i class="fa fa-star col p-0"></i>
+                                    <i class="fa fa-star col p-0"></i>
+                                    <i class="fa fa-star col p-0"></i>
+                                    <i class="fa fa-star col p-0"></i>
+                                </label><br>
+                                <input type="radio" id="threeEval" name="rating" value="3">
+                                <label for="threeEval" style="word-spacing: -10px;">
+                                    <i class="fa fa-star col p-0"></i>
+                                    <i class="fa fa-star col p-0"></i>
+                                    <i class="fa fa-star col p-0"></i>
+                                </label><br>
+                                <input type="radio" id="twoEval" name="rating" value="2">
+                                <label for="twoEval" style="word-spacing: -10px;">
+                                    <i class="fa fa-star col p-0"></i>
+                                    <i class="fa fa-star col p-0"></i>
+                                </label><br>
+                                <input type="radio" id="oneEval" name="rating" value="1">
+                                <label for="oneEval" style="word-spacing: -10px;">
+                                    <i class="fa fa-star col p-0"></i>
+                                </label><br>
+                            </div>
+                        </div>
+                        <input class="my-3 w-100" type="submit" name="" value="تطبيــــق">
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

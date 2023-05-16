@@ -1,0 +1,66 @@
+﻿<!DOCTYPE html>
+
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>
+        Thalili-تحاليلي
+    </title>
+    <link rel="icon" href="~/Content/Assets/imgs/Group 640.png" type="image/x-icon">
+    <!-- Main CSS File -->
+    <link rel="stylesheet" href="~/Content/Assets/css/master.css" asp-append-version="true">
+    <!-- BootStarp CSS File -->
+    <link rel="stylesheet" href="~/Content/Assets/css/bootstrap-5.1.3-dist/bootstrap.min.css" asp-append-version="true">
+    <!-- Fontawesome CSS File -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.0/css/all.min.css">
+    <!-- Fontawesome Js File -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.0/js/all.min.js"></script>
+    <script src="https://js.hcaptcha.com/1/api.js"></script>
+</head>
+<body>
+    <div class="labOwnerPage container-flud">
+        <div class="row m-0">
+            <div class="col-2 rightCont fixed-top">
+                <div class="container-flud">
+                    <h3 class="h3 pt-3">@Session["labName"]</h3>
+                    <hr>
+                    <ul class="list-group p-0 d-flex">
+                        <li class="list-group-item px-0 border-0">
+                            <a href="/LabDashboard/Orders" class="btn ps-0 w-100 text-end" onclick="active_Element(this)">
+                                <i class="fa-solid fa-list-check"></i>
+                                <span>الطلبات</span>
+                            </a>
+                        </li>
+                        <li class="list-group-item px-0 border-0">
+                            <a href="/LabDashboard/Analysis" class="btn ps-0 w-100 text-end" onclick="active_Element(this)">
+                                <i class="fa-solid fa-flask"></i>
+
+                                <span>التحاليل</span>
+                            </a>
+                        </li>
+                        <li class="list-group-item px-0 border-0">
+                            <a href="/LabDashboard/Settings" class="btn ps-0 w-100 text-end" onclick="active_Element(this)">
+                                <i class="fa-solid fa-gear"></i>
+                                <span>اعدادات المعمل</span>
+                            </a>
+                        </li>
+                        <li class="list-group-item px-0 border-0" style="position: absolute; bottom: 3vh;">
+                            <a href="/LabDashboard/LogOut" class="btn ps-0 w-100 text-end">
+                                <i class="fa-solid fa-right-from-bracket"></i>
+                                <span>تسجيل الخروج</span>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div>
+        @RenderBody()
+    </div>
+    <script src="~/Content/Assets/js/master.js" asp-append-version="true"></script>
+    <script src="~/Content/Assets/js/bootstrap-5.1.3-dist/bootstrap.min.js" asp-append-version="true"></script>
+</body>
+</html>

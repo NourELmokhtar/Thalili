@@ -1,0 +1,35 @@
+﻿
+@{
+    ViewBag.Title = "Login";
+    Layout = "~/Views/Shared/_LayoutEmpty.cshtml";
+}
+
+<main>
+    <div class="admin-loginpage">
+        <div class="container">
+            <div class="row justify-content-center">
+                <img class="my-4" src="./Assets/imgs/Group 1003.png" alt="">
+            </div>
+            <div class="row justify-content-center">
+                <form class="py-4" action="/Admin/LoginConfirm" method="post">
+                    <div class="row justify-content-center align-center">
+                        <p style="width: fit-content ;">تسجيل دخول المشرف</p>
+                    </div>
+                    <p style="color:red"> @ViewBag.ERoor</p>
+                    <div class="row mt-2 justify-content-center align-center" style="position: relative;">
+                        <label for="#AdminEmail"><img src="./Assets/imgs/icons8_user_2.png" alt="" style="z-index: 100; width:fit-content;position: absolute;top: 50%; right:18%;transform: translate(0, -50% );"></label>
+                        <input class="col-8" type="email" name="email" value="@ViewBag.Email" id="AdminEmail" placeholder="البريد الالكتروني" required>
+                    </div>
+                    <div class="row mt-4 justify-content-center align-center" style="position: relative;">
+                        <label for="#AdminEmail"><img src="./Assets/imgs/icons8_key.png" alt="" style="z-index: 100; width:fit-content;position: absolute;top: 50%; right:18%;transform: translate(0, -50% );"></label>
+                        <input class="col-8" type="password" name="pass" id="" value="@ViewBag.Password" placeholder="الرقم السري" required>
+                    </div>
+                    <div class="row mt-4 justify-content-center align-center">
+                        <input class="col-3 btn btn-primary" type="submit" value="تسجيل الدخول">
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</main>
+

@@ -1,0 +1,93 @@
+﻿@using Thalili.Models
+@model List<analysis_in_lab>
+@{
+    ViewBag.Title = "Available_Analysis";
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+<main>
+    <div class="labOwnerPage container-flud">
+        <div class="row m-0">
+            <div class="col-2"></div>
+            <div class="col-10 leftCont pt-3 pe-3">
+                <i class="fa-solid fa-shop leftsvg"></i>
+                <h3 class="h3 d-inline lefth3 ">المعامل</h3>
+                <small class="d-block pb-3">التحاليل المتوفرة</small>
+                <div class="leftCont-all">
+                    <div class="container pt-2 pb-5">
+                        <div>
+                            <p class="section-address">قائمة التحاليل</p>
+                            <div class="row table-head align-items-center">
+                                <div class="col-2">رقم المعرف</div>
+                                <div class="col-2">اسم التحليل</div>
+                                <div class="col-2">الصورة</div>
+                                <div class="col-1">العينات</div>
+                                <div class="col-5">الوصف</div>
+                            </div>
+                            @{ int curent = Convert.ToInt32(ViewData["page"]);
+                             }
+
+                            @for (int i = (curent - 1) * 4; i < Math.Min(Model.Count(), 4 * curent); i++)
+                            {
+                                <div class="row talabt-item">
+                                    <div class="col-2 AnalysisID">@Model[i].medical_analysis_id</div>
+                                    <div class="col-2">@Model[i].medical_analysis.name</div>
+                                    <div class="col-2"><a href="#" target="_blank">a</a></div>
+                                    <div class="col-1">
+                                        <div class="row flex-column">
+                                           
+                                            <div class="col">@Model[i].medical_analysis.samples.ElementAt(0).sample_name</div>
+
+                                          
+                                           
+                                        </div>
+                                    </div>
+                                    <div class="col-5">@Model[i].medical_analysis.description</div>
+                                </div>
+                            }
+
+                            <nav class="paginat mt-4 mb-3">
+
+
+                                <ul class="d-flex justify-content-center" style="list-style:none;">
+                                    @for (int i = 1; i <= Math.Ceiling((Model.Count() * 1.0) / 4); i++)
+                                    {
+                                        if (i == curent)
+                                        {
+                                            <li class="page_item active" aria-current="page">
+                                                <span class="page_link">@i</span>
+                                            </li>
+                                        }
+                                        else
+                                        {
+                                            string pagination = Request.QueryString["page"];
+                                            if (pagination == null)
+                                            {
+                                                <li class="page_item "><a class="page_link" href="@Request.Url.AbsoluteUri?page=@i">@i</a></li>
+
+                                            }
+                                            else
+                                            {
+                                                string link = Request.Url.AbsoluteUri;
+                                                string newLink = "";
+                                                for (int j = 0; j < link.Length - 1; j++)
+                                                {
+                                                    newLink += link[j];
+                                                }
+                                                newLink += i.ToString();
+                                                <li class="page_item "><a class="page_link" href="@newLink">@i</a></li>
+                                            }
+                                        }
+                                    }
+
+                                </ul>
+                            </nav>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    </div>
+</main>
+

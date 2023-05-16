@@ -1,0 +1,46 @@
+﻿@{
+    ViewBag.Title = "Login";
+}
+<main>
+    <div class="FormPage aLoginPageForUser">
+        <div class="container-xl">
+            <div class="row w-100 p-0 m-0 pt-5">
+                <div class="col-lg-6 col-md-8 col-sm-10 p-0 btn-group" id="login-change-btns">
+                    <button type="button" class="btn" id="lab-owner-btn" onclick="changeLoginLabOwnerButton()">صاحب معمل</button>
+                    <button type="button" class="btn loginChangeBtnsActive" id="user-btn" onclick="changeLoginUserButton()">مستخدم عادي</button>
+                </div>
+            </div>
+            <div class="row w-100 m-0">
+                <div class="col-lg-6 col-md-8 col-sm-10 TheForm">
+                    @if (ViewData["islab"] != null)
+                    {
+                        <script>
+                            document.body.onload = function () { document.getElementById("lab-owner-btn").click(); };
+                        </script>
+                    }
+                    <form class="align-middle" action="/Login/LoginConfirm" method="post" style="width:90%;margin:auto;">
+                        <h3 class="h3 pt-3">مستخدم عادي</h3>
+                        <p class="aboutParagraph">تسجيل الدخول كمستخدم عادي يتيح لك إمكانيات اختيار التحاليل والمعامل وطلب عميل لاخذ العينات اللازمة</p>
+                        <p style="color:red"> @ViewBag.ERoor</p>
+                        <div class="row m-0 mt-5 loginpageTextInput" style="position: relative;">
+                            <input class="col m-auto rounded-2" type="email" name="email" id="emailField" placeholder="البريد الالكترونى" value="@ViewBag.Email" autofocus required>
+                            <label for="userNameField"><img src="~/Content/Assets/imgs/icons8_user_2.png" alt="" style="position: absolute; top:13px;"></label>
+                        </div>
+                        <div class="row m-0" style="position: relative;">
+                            <input class="col m-auto mt-4 rounded-2" type="password" name="pass" id="passwordField" placeholder="الرقم السري" value="@ViewBag.Password" required>
+                            <label for="passwordField"><img src="~/Content/Assets/imgs/icons8_key.png" alt="" style="position: absolute; top:43px;"></label>
+                        </div>
+                        <div class="row m-0 mt-5">
+                            <input class="col-md-5 m-auto mt-3 rounded-2 px-0" type="submit" value="تسجيل دخول" name="" id="submitBtn">
+                            <a href="/Register" id="createAccountbtn" class="col-md-5 m-auto mt-3 rounded-2 px-0" type="button">تسجيل حساب</a>
+                        </div>
+                        <div class="row m-0 mt-2 text-center">
+                            <a style="text-decoration: none;" class="col-md-5 m-auto mt-3 rounded-2 px-0" href="/Login/ResetPassword">هل نسيت كلمة السر؟</a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <div class="layer"></div>
+        </div>
+    </div>
+</main>
